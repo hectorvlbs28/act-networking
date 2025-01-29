@@ -1,7 +1,7 @@
 {
-  "name": "mi-proyecto",
+  "name": "todoapp",
   "version": "1.0.0",
-  "description": "Proyecto con React, Express y Docker para MySQL",
+  "description": "Todo App, Full Stack Application with MySQL , Node.js (Express) and React.",
   "scripts": {
     "build:db": "cd todoappdb && docker-compose up",
     "start:db": "cd todoappdb && docker-compose up -d",
