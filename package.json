@@ -6,7 +6,8 @@
     "build:db": "cd todoappdb && docker-compose up",
     "start:db": "cd todoappdb && docker-compose up -d",
     "stop:db": "cd todoappdb && docker-compose down",
-    "start:server": "cd todoappserver && npm run start"
+    "start:server": "cd todoappserver && npm run start",
+    "start:client": "cd todoappclient && npm run start"
   },
   "dependencies": {},
   "devDependencies": {},
