@@ -1,28 +1,32 @@
 module.exports = (sequelize, DataTypes) => {
-  const Sessions = sequelize.define('Sessions', {
-    session_id: {
+  const Tasks = sequelize.define('Tasks', {
+    task_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
     },
-    token: {
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    expiration_time: {
-      type: DataTypes.BIGINT,
+    status: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    user_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
   });
 
-  return Sessions;
+  return Tasks;
 };

@@ -5,7 +5,6 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-//
 var authusersRouter = require('./routes/authusers');
 
 const { sequelize } = require('./models/index');
@@ -20,7 +19,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-//
 app.use('/auth', authusersRouter);
 
 sequelize

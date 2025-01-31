@@ -1,28 +1,28 @@
 module.exports = (sequelize, DataTypes) => {
-  const Sessions = sequelize.define('Sessions', {
-    session_id: {
+  const Logs = sequelize.define('Logs', {
+    log_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
     },
-    token: {
-      type: DataTypes.TEXT,
+    user_id: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
-    expiration_time: {
-      type: DataTypes.BIGINT,
+    action: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    summary: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    user_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
   });
 
-  return Sessions;
+  return Logs;
 };

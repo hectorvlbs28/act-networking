@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt');
 const { User } = require('../../models/');
+const { createPasswordHash } = require('../auth/passwordManager');
 
 const createUserService = async (name, email, password) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await createPasswordHash(password);
     const { name: userName, email: userEmail } = await User.create({
       name,
       email,
@@ -25,4 +25,9 @@ const isEmailRegisteredService = async (email) => {
   return user ? true : false;
 };
 
-module.exports = { createUserService, isEmailRegisteredService };
+const getUserByEmailService = async (email) => {
+  const user = await User.findOne({ where: { email: email } });
+  return user;
+};
+
+module.exports = { createUserService, isEmailRegisteredService, getUserByEmailService };

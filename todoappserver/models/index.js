@@ -3,6 +3,8 @@ const { DataTypes } = require('sequelize');
 
 const User = require('./user')(sequelize, DataTypes);
 const Sessions = require('./sessions')(sequelize, DataTypes);
+const Logs = require('./logs')(sequelize, DataTypes);
+const Tasks = require('./tasks')(sequelize, DataTypes);
 
 User.hasMany(Sessions, {
   foreignKey: 'user_id',
@@ -24,4 +26,6 @@ module.exports = {
   sequelize,
   User,
   Sessions,
+  Logs,
+  Tasks,
 };
