@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import AppTheme from '../Theme/AppTheme';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CssBaseline, Box, Button, Divider, FormLabel, FormControl, TextField, Typography, Stack } from '@mui/material';
 import Links from '../Utils/Links';
+import { postSignIn } from '../Services/authService';
+import { createSignInBody } from '../Utils/createBodys';
+import { AppContext } from '../Context/AppContext';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -45,22 +48,37 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const SignIn = () => {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+const SignIn = ({ handleToastError, handleToastSuccess }) => {
+  const navigate = useNavigate();
+  const { dispatch } = useContext(AppContext);
 
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (emailError || passwordError) return;
+
+    const { email, password } = event.target;
+    const signInBody = createSignInBody(email.value, password.value);
+
+    try {
+      const postSignUpRes = await postSignIn(signInBody);
+      handleToastSuccess(postSignUpRes.message);
+
+      const { tokenExpirationTime, userEmail, userId, userName, userToken } = postSignUpRes.user;
+      dispatch({
+        type: 'SET_USER',
+        payload: { tokenExpirationTime, userEmail, userId, userName, userToken },
+      });
+
+      [(email, password)].forEach((input) => (input.value = ''));
+      navigate(Links.home);
+    } catch (error) {
+      handleToastError(error.response.data.message);
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   const validateInputs = () => {

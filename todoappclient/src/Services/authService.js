@@ -1,9 +1,27 @@
 import axiosInstance from './axiosInstance';
+import apisEndPoints from '../Utils/Apis';
 
-export const getDefaultImage = async (pokemonUrl) => {
+export const postSignUp = async (body) => {
   try {
-    const pokemonUrlSplit = pokemonUrl.split('/');
-    const response = await axiosInstance.get(`pokemon/${pokemonUrlSplit[6]}`);
+    const response = await axiosInstance.post(apisEndPoints.auth.signUp, body);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postSignIn = async (body) => {
+  try {
+    const response = await axiosInstance.post(apisEndPoints.auth.signIn, body);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const putSignOut = async (body) => {
+  try {
+    const response = await axiosInstance.put(apisEndPoints.auth.signOut, body);
     return response.data;
   } catch (error) {
     throw error;

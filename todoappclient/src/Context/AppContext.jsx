@@ -3,8 +3,11 @@ import React, { createContext, useReducer, useEffect } from 'react';
 const AppContext = createContext();
 
 const initialState = {
-  user: null,
-  // otros estados iniciales
+  userId: null,
+  userName: '',
+  userEmail: '',
+  userToken: null,
+  tokenExpirationTime: 0,
 };
 
 const reducer = (state, action) => {
@@ -12,9 +15,21 @@ const reducer = (state, action) => {
     case 'SET_USER':
       return {
         ...state,
-        user: action.payload,
+        userId: action.payload.userId,
+        userName: action.payload.userName,
+        userEmail: action.payload.userEmail,
+        userToken: action.payload.userToken,
+        tokenExpirationTime: action.payload.tokenExpirationTime,
       };
-    // otros casos
+    case 'SIGN_OUT':
+      return {
+        ...state,
+        userId: null,
+        userName: '',
+        userEmail: '',
+        userToken: null,
+        tokenExpirationTime: 0,
+      };
     default:
       return state;
   }

@@ -17,6 +17,8 @@ const sessionNotFoundMessage = 'No se encontró una sesión activa. Por favor, i
 
 const signoutErrorMessage = 'Hubo un problema al cerrar sesión. Por favor, inténtalo nuevamente.';
 
+const createTaskErrorMessage = 'Hubo un problema al crear la tarea. Por favor, inténtalo nuevamente.';
+
 module.exports = {
   internalErrorMessage,
   emailRegisteredMessage,
@@ -26,4 +28,5 @@ module.exports = {
   sessionsLimitMessage,
   sessionNotFoundMessage,
   signoutErrorMessage,
+  createTaskErrorMessage,
 };

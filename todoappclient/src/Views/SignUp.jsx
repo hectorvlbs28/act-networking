@@ -2,9 +2,11 @@ import React from 'react';
 import AppTheme from '../Theme/AppTheme';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CssBaseline, Box, Button, Divider, FormLabel, FormControl, TextField, Typography, Stack } from '@mui/material';
 import Links from '../Utils/Links';
+import { postSignUp } from '../Services/authService';
+import { createSignUpBody } from '../Utils/createBodys';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -45,7 +47,9 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   marginTop: '3rem',
 }));
 
-const SignUp = () => {
+const SignUp = ({ handleToastError, handleToastSuccess }) => {
+  const navigate = useNavigate();
+
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -62,7 +66,7 @@ const SignUp = () => {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage('Por favor, ingresa una dirección de correo electrónico válida.');
       isValid = false;
     } else {
       setEmailError(false);
@@ -71,7 +75,7 @@ const SignUp = () => {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage('La contraseña debe tener al menos 6 caracteres.');
       isValid = false;
     } else {
       setPasswordError(false);
@@ -80,7 +84,7 @@ const SignUp = () => {
 
     if (!name.value || name.value.length < 1) {
       setNameError(true);
-      setNameErrorMessage('Name is required.');
+      setNameErrorMessage('El nombre es obligatorio.');
       isValid = false;
     } else {
       setNameError(false);
@@ -90,18 +94,21 @@ const SignUp = () => {
     return isValid;
   };
 
-  const handleSubmit = (event) => {
-    if (nameError || emailError || passwordError) {
-      event.preventDefault();
-      return;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (nameError || emailError || passwordError) return;
+
+    const { name, email, password } = event.target;
+    const signUpBody = createSignUpBody(name.value, email.value, password.value);
+
+    try {
+      const postSignUpRes = await postSignUp(signUpBody);
+      handleToastSuccess(postSignUpRes.message);
+      [name, email, password].forEach((input) => (input.value = ''));
+      navigate(Links.signIn);
+    } catch (error) {
+      handleToastError(error.response.data.message);
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   return (

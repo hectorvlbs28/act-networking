@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
@@ -14,6 +14,8 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { Link, useLocation } from 'react-router-dom';
 import ColorModeIconDropdown from './ColorModeIconDropdown';
 import Links from '../Utils/Links';
+import MyProfileBtn from './MyProfileBtn';
+import { AppContext } from '../Context/AppContext';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -33,6 +35,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 const AppAppBar = () => {
   const location = useLocation();
+  const { state } = useContext(AppContext);
+  const { userToken } = state;
+
   const [open, setOpen] = React.useState(false);
   const [isHome, setIsHome] = React.useState(false);
 
@@ -83,6 +88,12 @@ const AppAppBar = () => {
                 Inicio
               </Button>
             )}
+
+            {userToken && (
+              <Button component={Link} to={Links.tasks} color="primary" variant="text" size="small">
+                Tareas
+              </Button>
+            )}
           </Box>
 
           <Box
@@ -92,12 +103,19 @@ const AppAppBar = () => {
               alignItems: 'center',
             }}
           >
-            <Button component={Link} to={Links.signUp} color="primary" variant="text" size="small">
-              Regístrate
-            </Button>
-            <Button component={Link} to={Links.signIn} color="primary" variant="contained" size="small">
-              Iniciar sesión
-            </Button>
+            {userToken ? (
+              <MyProfileBtn />
+            ) : (
+              <>
+                <Button component={Link} to={Links.signUp} color="primary" variant="text" size="small">
+                  Regístrate
+                </Button>
+                <Button component={Link} to={Links.signIn} color="primary" variant="contained" size="small">
+                  Iniciar sesión
+                </Button>
+              </>
+            )}
+
             <ColorModeIconDropdown />
           </Box>
 
@@ -132,17 +150,43 @@ const AppAppBar = () => {
                 <MenuItem component={Link} to={Links.home} onClick={handleCloseDrawer}>
                   Inicio
                 </MenuItem>
+                {userToken && (
+                  <MenuItem component={Link} to={Links.tasks} onClick={handleCloseDrawer}>
+                    Tareas
+                  </MenuItem>
+                )}
                 <Divider sx={{ my: 3 }} />
-                <MenuItem>
-                  <Button component={Link} to={Links.signUp} onClick={handleCloseDrawer} variant="contained" fullWidth>
-                    Regístrate
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button component={Link} to={Links.signIn} onClick={handleCloseDrawer} variant="contained" fullWidth>
-                    Iniciar sesión
-                  </Button>
-                </MenuItem>
+
+                {userToken ? (
+                  <MenuItem>
+                    <MyProfileBtn />
+                  </MenuItem>
+                ) : (
+                  <>
+                    <MenuItem>
+                      <Button
+                        component={Link}
+                        to={Links.signUp}
+                        onClick={handleCloseDrawer}
+                        variant="contained"
+                        fullWidth
+                      >
+                        Regístrate
+                      </Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <Button
+                        component={Link}
+                        to={Links.signIn}
+                        onClick={handleCloseDrawer}
+                        variant="contained"
+                        fullWidth
+                      >
+                        Iniciar sesión
+                      </Button>
+                    </MenuItem>
+                  </>
+                )}
               </Box>
             </Drawer>
           </Box>

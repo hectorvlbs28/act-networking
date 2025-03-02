@@ -5,4 +5,6 @@ const signInSuccesMessage = (name) => ` Inicio de sesión exitoso. ¡Bienvenido,
 
 const signoutSuccessMessage = 'Sesión cerrada correctamente. ¡Hasta pronto!';
 
-module.exports = { signupSuccessMessage, signInSuccesMessage, signoutSuccessMessage };
+const createTaskSuccessMessage = (title) => `Tarea: ${title}, creada con éxito.`;
+
+module.exports = { signupSuccessMessage, signInSuccesMessage, signoutSuccessMessage, createTaskSuccessMessage };
