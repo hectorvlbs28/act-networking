@@ -1,13 +1,15 @@
 {
-  "name": "todoapp",
+  "name": "NetworkingApp",
   "version": "1.0.0",
-  "description": "Todo App, Full Stack Application with MySQL , Node.js (Express) and React.",
+  "description": "Networking App, Full Stack Application with MySQL , Node.js (Express) and React.",
   "scripts": {
-    "build:db": "cd todoappdb && docker-compose up",
-    "start:db": "cd todoappdb && docker-compose up -d",
-    "stop:db": "cd todoappdb && docker-compose down",
-    "start:server": "cd todoappserver && npm run start",
-    "start:client": "cd todoappclient && npm run start"
+    "build:db": "cd networkingDB && docker-compose up",
+    "start:db": "cd networkingDB && docker-compose up -d",
+    "stop:db": "cd networkingDB && docker-compose down",
+    "i:backExpress": "cd backendExpress && yarn install",
+    "start:backExpress": "cd backendExpress && yarn start",
+    "i:client": "cd client && yarn install",
+    "start:client": "cd client && yarn dev"
   },
   "dependencies": {},
   "devDependencies": {},
