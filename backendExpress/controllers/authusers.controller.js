@@ -1,4 +1,4 @@
-const { createUserService, getUserByEmailService } = require('../services/database/user');
+const { createUserService, getUserByUserNameService } = require('../services/database/user');
 const { handleError } = require('../utils/handleError');
 const HttpStatus = require('../utils/httpStatus');
 const { signupErrorMessage, passwordErrorMessage, signoutErrorMessage } = require('../utils/errorMessages');
@@ -9,10 +9,11 @@ const { createSessionService, deleteSessionService } = require('../services/data
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    const newUser = await createUserService(name, email, password);
+    const { name, userName, password } = req.body;
+    const newUser = await createUserService(name, userName, password);
+    console.log('newUser: ', newUser);
     return res.status(HttpStatus.CREATED).send({
-      message: signupSuccessMessage(newUser.name, newUser.email),
+      message: signupSuccessMessage(newUser.newUserName),
     });
   } catch (error) {
     console.log('-- Error in signup controller -> error: ', error.message);
@@ -22,26 +23,19 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
   try {
-    const { email, password } = req.body || {};
-    const {
-      password: userPassword,
-      user_id: userId,
-      name: userName,
-      email: userEmail,
-    } = await getUserByEmailService(email);
-    const isPasswordCorrect = await comparePassword(password, userPassword);
+    const { userName, password } = req.body || {};
+    const user = await getUserByUserNameService(userName);
+    const isPasswordCorrect = await comparePassword(password, user.password);
     if (!isPasswordCorrect) {
       return handleError(res, HttpStatus.UNAUTHORIZED, passwordErrorMessage);
     }
-    const { newJwt: userToken, expirationTime: tokenExpirationTime } = generateJwt(userId);
-    await createSessionService(userId, userToken, tokenExpirationTime);
+    const { newJwt: userToken, expirationTime: tokenExpirationTime } = generateJwt(user.user_id);
+    await createSessionService(user.user_id, userToken, tokenExpirationTime);
 
     return res.status(HttpStatus.ACCEPTED).send({
-      message: signInSuccesMessage(userName),
-      user: {
-        userName,
-        userEmail,
-        userId,
+      message: signInSuccesMessage(user.name),
+      user,
+      token: {
         userToken,
         tokenExpirationTime,
       },

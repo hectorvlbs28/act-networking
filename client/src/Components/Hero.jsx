@@ -1,7 +1,10 @@
 import React from 'react';
-import { Box, Button, Container, Stack, Typography } from '@mui/material';
+import { useIntl } from 'react-intl';
+import { Box, Container, Stack, Typography } from '@mui/material';
 
 const Hero = () => {
+  const intl = useIntl();
+
   return (
     <Box
       id="hero"
@@ -33,7 +36,8 @@ const Hero = () => {
               fontSize: 'clamp(3rem, 10vw, 3.5rem)',
             }}
           >
-            Todo&nbsp;
+            {intl.formatMessage({ id: 'networking' })}
+            &nbsp;
             <Typography
               component="span"
               variant="h1"
@@ -45,31 +49,20 @@ const Hero = () => {
                 }),
               })}
             >
-              App
+              {intl.formatMessage({ id: 'act' })}
             </Typography>
           </Typography>
 
           <Typography
+            variant="subtitle1"
             sx={{
               textAlign: 'center',
               color: 'text.secondary',
               width: { sm: '100%', md: '80%' },
             }}
           >
-            Explora nuestra potente app de tareas, diseñada para optimizar tu gestión diaria. Aumenta tu productividad
-            con funciones intuitivas y una organización eficiente.
+            {intl.formatMessage({ id: 'heroText' })}
           </Typography>
-
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={1}
-            useFlexGap
-            sx={{ pt: 2, width: { xs: '100%', sm: '350px' } }}
-          >
-            <Button variant="contained" color="primary" size="small" sx={{ width: '100%' }}>
-              Iniciar
-            </Button>
-          </Stack>
         </Stack>
       </Container>
     </Box>

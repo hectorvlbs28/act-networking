@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
@@ -35,8 +35,8 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 const AppAppBar = () => {
   const location = useLocation();
-  const { state } = useContext(AppContext);
-  const { userToken } = state;
+  //const { state } = useContext(AppContext);
+  //const { userToken } = state;
 
   const [open, setOpen] = React.useState(false);
   const [isHome, setIsHome] = React.useState(false);
@@ -89,11 +89,11 @@ const AppAppBar = () => {
               </Button>
             )}
 
-            {userToken && (
+            {/* {userToken && (
               <Button component={Link} to={Links.tasks} color="primary" variant="text" size="small">
                 Tareas
               </Button>
-            )}
+            )} */}
           </Box>
 
           <Box
@@ -103,7 +103,7 @@ const AppAppBar = () => {
               alignItems: 'center',
             }}
           >
-            {userToken ? (
+            {/* {userToken ? (
               <MyProfileBtn />
             ) : (
               <>
@@ -114,7 +114,7 @@ const AppAppBar = () => {
                   Iniciar sesión
                 </Button>
               </>
-            )}
+            )} */}
 
             <ColorModeIconDropdown />
           </Box>
@@ -150,14 +150,10 @@ const AppAppBar = () => {
                 <MenuItem component={Link} to={Links.home} onClick={handleCloseDrawer}>
                   Inicio
                 </MenuItem>
-                {userToken && (
-                  <MenuItem component={Link} to={Links.tasks} onClick={handleCloseDrawer}>
-                    Tareas
-                  </MenuItem>
-                )}
+
                 <Divider sx={{ my: 3 }} />
 
-                {userToken ? (
+                {/* {userToken ? (
                   <MenuItem>
                     <MyProfileBtn />
                   </MenuItem>
@@ -186,7 +182,7 @@ const AppAppBar = () => {
                       </Button>
                     </MenuItem>
                   </>
-                )}
+                )} */}
               </Box>
             </Drawer>
           </Box>

@@ -8,8 +8,8 @@ const LIMIT_SESSIONS = process.env.LIMIT_SESSIONS;
 
 const checkActiveSessionsLimit = async (req, res, next) => {
   try {
-    const { email } = req.body;
-    const sessionsCount = await getSessionsCountService(email);
+    const { userName } = req.body;
+    const sessionsCount = await getSessionsCountService(userName);
 
     if (sessionsCount >= LIMIT_SESSIONS) {
       console.log(`-- checkActiveSessionsLimit -> sessionsCount: `, sessionsCount);

@@ -1,18 +1,17 @@
 const { User } = require('../../models');
 const { createPasswordHash } = require('../auth/passwordManager');
 
-const createUserService = async (name, email, password) => {
+const createUserService = async (name, userName, password) => {
   try {
     const hashedPassword = await createPasswordHash(password);
-    const { name: userName, email: userEmail } = await User.create({
+    const { name: newUserName } = await User.create({
       name,
-      email,
+      userName,
       password: hashedPassword,
     });
 
     return {
-      name: userName,
-      email: userEmail,
+      newUserName,
     };
   } catch (error) {
     console.log('-- Error in createUserService -> error: ', error.message);
@@ -20,14 +19,20 @@ const createUserService = async (name, email, password) => {
   }
 };
 
-const isEmailRegisteredService = async (email) => {
-  const user = await User.findOne({ where: { email: email } });
+const isUserRegisteredService = async (userName) => {
+  const user = await User.findOne({ where: { userName: userName } });
   return user ? true : false;
 };
 
-const getUserByEmailService = async (email) => {
-  const user = await User.findOne({ where: { email: email } });
-  return user;
+const getUserByUserNameService = async (userName) => {
+  const user = await User.findOne({ where: { userName } });
+  const { user_id, name, password } = user;
+  return {
+    user_id,
+    name,
+    userName,
+    password,
+  };
 };
 
-module.exports = { createUserService, isEmailRegisteredService, getUserByEmailService };
+module.exports = { createUserService, isUserRegisteredService, getUserByUserNameService };

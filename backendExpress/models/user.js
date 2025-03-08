@@ -12,17 +12,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      email: {
+      userName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      verified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
       },
       deleted: {
         type: DataTypes.BOOLEAN,
@@ -33,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       indexes: [
         {
           unique: true,
-          fields: ['email'],
+          fields: ['userName'],
         },
       ],
     }

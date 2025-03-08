@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import AppTheme from '../Theme/AppTheme';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
@@ -50,7 +50,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 
 const SignIn = ({ handleToastError, handleToastSuccess }) => {
   const navigate = useNavigate();
-  const { dispatch } = useContext(AppContext);
+  // const { dispatch } = useContext(AppContext);
 
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
@@ -68,11 +68,11 @@ const SignIn = ({ handleToastError, handleToastSuccess }) => {
       const postSignUpRes = await postSignIn(signInBody);
       handleToastSuccess(postSignUpRes.message);
 
-      const { tokenExpirationTime, userEmail, userId, userName, userToken } = postSignUpRes.user;
-      dispatch({
-        type: 'SET_USER',
-        payload: { tokenExpirationTime, userEmail, userId, userName, userToken },
-      });
+      //const { tokenExpirationTime, userEmail, userId, userName, userToken } = postSignUpRes.user;
+      // dispatch({
+      //   type: 'SET_USER',
+      //   payload: { tokenExpirationTime, userEmail, userId, userName, userToken },
+      // });
 
       [(email, password)].forEach((input) => (input.value = ''));
       navigate(Links.home);

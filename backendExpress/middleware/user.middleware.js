@@ -1,17 +1,16 @@
-const { isEmailRegisteredService } = require('../services/database/user');
-const { emailRegisteredMessage, internalErrorMessage, userDoesNotExistMessage } = require('../utils/errorMessages');
+const { isUserRegisteredService } = require('../services/database/user');
+const { userNameRegisteredMessage, internalErrorMessage, userDoesNotExistMessage } = require('../utils/errorMessages');
 const { handleError } = require('../utils/handleError');
 const HttpStatus = require('../utils/httpStatus');
 
-const handleEmailCheck = async (req, res, next, checkFn, errorMessageFn) => {
+const handleUserNameCheck = async (req, res, next, checkFn, errorMessageFn) => {
   try {
-    const { email } = req.body;
-    const emailRegistered = await isEmailRegisteredService(email);
-    console.log('emailRegistered', emailRegistered);
+    const { userName } = req.body;
+    const userNameRegistered = await isUserRegisteredService(userName);
 
-    if (checkFn(emailRegistered)) {
-      console.log(`-- Error in ${errorMessageFn.name} -> email: `, email, errorMessageFn(email));
-      return handleError(res, HttpStatus.BAD_REQUEST, errorMessageFn(email));
+    if (checkFn(userNameRegistered)) {
+      console.log(`-- Error in ${errorMessageFn.name} -> userName: `, userName, errorMessageFn(userName));
+      return handleError(res, HttpStatus.BAD_REQUEST, errorMessageFn(userName));
     }
 
     next();
@@ -21,12 +20,12 @@ const handleEmailCheck = async (req, res, next, checkFn, errorMessageFn) => {
   }
 };
 
-const validateEmailRegistered = (req, res, next) => {
-  handleEmailCheck(req, res, next, (emailRegistered) => emailRegistered, emailRegisteredMessage);
+const validateUserRegistered = (req, res, next) => {
+  handleUserNameCheck(req, res, next, (userNameRegistered) => userNameRegistered, userNameRegisteredMessage);
 };
 
 const verifyUserExists = (req, res, next) => {
-  handleEmailCheck(req, res, next, (emailRegistered) => !emailRegistered, userDoesNotExistMessage);
+  handleUserNameCheck(req, res, next, (userNameRegistered) => !userNameRegistered, userDoesNotExistMessage);
 };
 
-module.exports = { validateEmailRegistered, verifyUserExists };
+module.exports = { validateUserRegistered, verifyUserExists };

@@ -1,7 +1,7 @@
-const signupSuccessMessage = (name, email) =>
-  `¡Bienvenido, ${name}! Tu cuenta con ${email} ha sido creada con éxito. ¡Disfruta la experiencia!`;
+const signupSuccessMessage = (name) =>
+  `¡Bienvenido, ${name}! Tu cuenta ha sido creada con éxito. ¡Disfruta la experiencia!`;
 
-const signInSuccesMessage = (name) => ` Inicio de sesión exitoso. ¡Bienvenido, ${name}!`;
+const signInSuccesMessage = (userRealName) => ` Inicio de sesión exitoso. ¡Bienvenido, ${userRealName}!`;
 
 const signoutSuccessMessage = 'Sesión cerrada correctamente. ¡Hasta pronto!';
 

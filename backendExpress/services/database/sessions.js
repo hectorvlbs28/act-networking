@@ -1,5 +1,5 @@
 const { Sessions } = require('../../models');
-const { getUserByEmailService } = require('./user');
+const { getUserByUserNameService } = require('./user');
 
 const createSessionService = async (userId, token, expirationTime) => {
   try {
@@ -14,8 +14,8 @@ const createSessionService = async (userId, token, expirationTime) => {
   }
 };
 
-const getSessionsCountService = async (email) => {
-  const { user_id: userId } = await getUserByEmailService(email);
+const getSessionsCountService = async (userName) => {
+  const { user_id: userId } = await getUserByUserNameService(userName);
   const sessionsCount = await Sessions.count({ where: { user_id: userId, deleted: false } });
   return sessionsCount;
 };
@@ -29,4 +29,9 @@ const deleteSessionService = async (token) => {
   await Sessions.update({ deleted: true }, { where: { token } });
 };
 
-module.exports = { createSessionService, getSessionsCountService, sessionExistsService, deleteSessionService };
+module.exports = {
+  createSessionService,
+  getSessionsCountService,
+  sessionExistsService,
+  deleteSessionService,
+};
